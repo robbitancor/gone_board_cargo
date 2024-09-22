@@ -18,6 +18,7 @@ class GoneBoard extends StatefulWidget {
   final Gradient startButtonGradient;
   final Function(int index)? pageChanged;
   final List<GonePage> items;
+  final Function()? nextPageFunc;
 
   const GoneBoard({
     super.key,
@@ -29,6 +30,7 @@ class GoneBoard extends StatefulWidget {
     this.activeDotColor = const Color(0xFF6C719F),
     this.nextText = 'NEXT',
     this.startText = 'START',
+    this.nextPageFunc,
     this.pageChanged,
     this.textStyle = const TextStyle(
       color: Colors.white,
@@ -114,10 +116,14 @@ class _OnBoardState extends State<GoneBoard> {
                     child: ElevatedButton(
                       onPressed: () {
                         if (widget.items.length - 1 == currentPage) {
-                          Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => widget.onFinishedPage));
+                          if(widget.nextPageFunc != null){
+                            widget.nextPageFunc!();
+                          }else{
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => widget.onFinishedPage));
+                          }
                         } else {
                           widget.pageController.nextPage(
                               duration: const Duration(milliseconds: 400),
