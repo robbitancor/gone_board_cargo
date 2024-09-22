@@ -24,7 +24,7 @@ class GoneBoard extends StatefulWidget {
     required this.pageController,
     required this.onFinishedPage,
     required this.items,
-    this.backgroundColor = const Color(0xFF181D4A),
+    this.backgroundColor = const Color.fromARGB(255,0,148,68),
     this.dotColor = const Color(0xFF2E3458),
     this.activeDotColor = const Color(0xFF6C719F),
     this.nextText = 'NEXT',
