@@ -7,12 +7,15 @@ class GonePage {
   final String image;
   final String text;
   final Color color;
+  TextStyle? style;
 
   GonePage(
-      {required this.context,
-      required this.image,
-      required this.text,
-      required this.color});
+      { required this.context,
+        required this.image,
+        required this.text,
+        required this.color,
+        this.style
+      });
 
   Widget build() {
     return Container(
@@ -37,7 +40,7 @@ class GonePage {
                   const SizedBox(),
                   Text(
                     text,
-                    style: const TextStyle(
+                    style: style ?? const TextStyle(
                       color: Colors.white,
                       fontSize: 30,
                     ),
