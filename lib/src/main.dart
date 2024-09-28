@@ -140,7 +140,7 @@ class _OnBoardState extends State<GoneBoard> {
                         ),
                       ),
                       child: Text(
-                        currentPage == 2 ? widget.startText : widget.nextText,
+                        currentPage == widget.items.length-1 ? widget.startText : widget.nextText,
                         style: widget.textStyle,
                       ),
                     ),
