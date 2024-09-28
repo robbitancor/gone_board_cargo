@@ -5,7 +5,7 @@ import 'package:gone_board/src/utils.dart';
 class GonePage {
   final BuildContext context;
   final String image;
-  final RichText? text;
+  final RichText? widget;
   final Color color;
   TextStyle? style;
   String? textString;
@@ -13,7 +13,7 @@ class GonePage {
   GonePage(
       { required this.context,
         required this.image,
-        required this.text,
+        required this.widget,
         required this.color,
         this.style
       });
@@ -39,12 +39,11 @@ class GonePage {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const SizedBox(),
-                  text ?? Text.rich(
-                    TextSpan(text: textString),
-                    style: style ?? const TextStyle(
+                  widget ?? Text.rich(
+                    TextSpan(text: textString,style: style ?? const TextStyle(
                       color: Colors.white,
                       fontSize: 30,
-                    ),
+                    )),
                   ),
                 ],
               ),
