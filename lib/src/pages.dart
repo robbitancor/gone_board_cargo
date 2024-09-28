@@ -4,19 +4,20 @@ import 'package:gone_board/src/utils.dart';
 
 class GonePage {
   final BuildContext context;
-  final String image;
+  final String? image;
   final RichText? widget;
   final Color color;
   TextStyle? style;
   String? textString;
-
+  Image? imageAsset;
   GonePage(
       { required this.context,
-        required this.image,
-        this.widget,
         required this.color,
-        this.style,
+        this.image = "",
         this.textString,
+        this.widget,
+        this.style,
+        this.imageAsset,
       });
 
   Widget build() {
@@ -50,8 +51,9 @@ class GonePage {
               ),
             ),
           ),
+          imageAsset ??
           Image.asset(
-            image,
+            image!,
             width: 300,
             height: 300,
           ).animate().moveY(
