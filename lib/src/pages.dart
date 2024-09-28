@@ -13,7 +13,7 @@ class GonePage {
   GonePage(
       { required this.context,
         required this.image,
-        required this.widget,
+        this.widget,
         required this.color,
         this.style,
         this.textString,
