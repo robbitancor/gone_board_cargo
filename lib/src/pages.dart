@@ -15,7 +15,8 @@ class GonePage {
         required this.image,
         required this.widget,
         required this.color,
-        this.style
+        this.style,
+        this.textString,
       });
 
   Widget build() {
