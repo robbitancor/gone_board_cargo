@@ -87,7 +87,7 @@ class _OnBoardState extends State<GoneBoard> {
               children: [
                 SmoothPageIndicator(
                   controller: widget.pageController,
-                  count: 4,
+                  count: widget.items.length,
                   axisDirection: Axis.horizontal,
                   effect: SlideEffect(
                     spacing: 7,
