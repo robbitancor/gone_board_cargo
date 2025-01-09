@@ -14,6 +14,7 @@ class GoneBoard extends StatefulWidget {
   final String startText;
   final TextStyle textStyle;
   final double buttonHeight;
+  final Gradient? gradientBackground;
   final Gradient nextButtonGradient;
   final Gradient startButtonGradient;
   final Function(int index)? pageChanged;
@@ -25,6 +26,7 @@ class GoneBoard extends StatefulWidget {
     required this.pageController,
     required this.onFinishedPage,
     required this.items,
+    this.gradientBackground,
     this.backgroundColor = const Color.fromARGB(255,0,148,68),
     this.dotColor = const Color(0xFF2E3458),
     this.activeDotColor = const Color(0xFF6C719F),
@@ -63,93 +65,100 @@ class _OnBoardState extends State<GoneBoard> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: widget.backgroundColor,
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Expanded(
-            flex: 6,
-            child: PageView(
-              controller: widget.pageController,
-              onPageChanged: (int page) {
-                setState(() {
-                  currentPage = page;
-                });
-                widget.pageChanged?.call(currentPage);
-              },
-              children: widget.items.map((e) => e.build()).toList(),
+      body: Container(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
+        decoration: BoxDecoration(
+          gradient: widget.gradientBackground
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+              flex: 6,
+              child: PageView(
+                controller: widget.pageController,
+                onPageChanged: (int page) {
+                  setState(() {
+                    currentPage = page;
+                  });
+                  widget.pageChanged?.call(currentPage);
+                },
+                children: widget.items.map((e) => e.build()).toList(),
+              ),
             ),
-          ),
-          Expanded(
-            flex: 1,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SmoothPageIndicator(
-                  controller: widget.pageController,
-                  count: widget.items.length,
-                  axisDirection: Axis.horizontal,
-                  effect: SlideEffect(
-                    spacing: 7,
-                    radius: 100,
-                    dotWidth: 31,
-                    dotHeight: 6,
-                    paintStyle: PaintingStyle.fill,
-                    dotColor: widget.dotColor,
-                    activeDotColor: widget.activeDotColor,
-                  ),
-                ),
-                const SizedBox(
-                  height: 4,
-                ),
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                  child: AnimatedContainer(
-                    duration: const Duration(milliseconds: 300),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      gradient: widget.items.length - 1 == currentPage
-                          ? widget.startButtonGradient
-                          : widget.nextButtonGradient,
+            Expanded(
+              flex: 1,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SmoothPageIndicator(
+                    controller: widget.pageController,
+                    count: widget.items.length,
+                    axisDirection: Axis.horizontal,
+                    effect: SlideEffect(
+                      spacing: 7,
+                      radius: 100,
+                      dotWidth: 31,
+                      dotHeight: 6,
+                      paintStyle: PaintingStyle.fill,
+                      dotColor: widget.dotColor,
+                      activeDotColor: widget.activeDotColor,
                     ),
-                    child: ElevatedButton(
-                      onPressed: () {
-                        if (widget.items.length - 1 == currentPage) {
-                          if(widget.nextPageFunc != null){
-                            widget.nextPageFunc!();
-                          }else{
-                            Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => widget.onFinishedPage));
+                  ),
+                  const SizedBox(
+                    height: 4,
+                  ),
+                  Padding(
+                    padding:
+                    const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                    child: AnimatedContainer(
+                      duration: const Duration(milliseconds: 300),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        gradient: widget.items.length - 1 == currentPage
+                            ? widget.startButtonGradient
+                            : widget.nextButtonGradient,
+                      ),
+                      child: ElevatedButton(
+                        onPressed: () {
+                          if (widget.items.length - 1 == currentPage) {
+                            if(widget.nextPageFunc != null){
+                              widget.nextPageFunc!();
+                            }else{
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => widget.onFinishedPage));
+                            }
+                          } else {
+                            widget.pageController.nextPage(
+                                duration: const Duration(milliseconds: 400),
+                                curve: Curves.easeInCubic);
                           }
-                        } else {
-                          widget.pageController.nextPage(
-                              duration: const Duration(milliseconds: 400),
-                              curve: Curves.easeInCubic);
-                        }
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.transparent,
-                        elevation: 0,
-                        minimumSize: Size(MediaQuery.of(context).size.width,
-                            widget.buttonHeight),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.transparent,
+                          elevation: 0,
+                          minimumSize: Size(MediaQuery.of(context).size.width,
+                              widget.buttonHeight),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        child: Text(
+                          currentPage == widget.items.length-1 ? widget.startText : widget.nextText,
+                          style: widget.textStyle,
                         ),
                       ),
-                      child: Text(
-                        currentPage == widget.items.length-1 ? widget.startText : widget.nextText,
-                        style: widget.textStyle,
-                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
